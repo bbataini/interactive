@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Basic interactive video with HTML5 and vanilla JavaScript</title>
-    </head>
     <body>
-        
-        <!-- Read my blog post on interactive videos: https://mostlydevstuff.com/2018/basic-interactive-video-with-html5-and-javascript/  --> 
-    
+            
         <style>
             .hide {
                 display: none;
@@ -18,8 +13,7 @@
 
             .videos {
                 position: relative;
-                max-width: 700px;
-                height: 400px;
+                max-width: 600px;
                 margin: 0 auto;
             }
 
@@ -49,6 +43,11 @@
                 background-color: rgba(0, 0, 0, .5);
             }
 
+            .answer {
+                height: 98%;
+                background-color: rgba(0, 0, 0, .5);
+            }
+            
             .menu, .menu-wrapper {
                 position: absolute;
                 top: 50%;
@@ -67,6 +66,7 @@
 
             .menu a:hover {
                 cursor: pointer;
+                color: green;
             }
 
             .menu ul li {
@@ -93,27 +93,22 @@
         <div class="videos">
             <div class="active initial closing">
                 <video autoplay="autoplay" loop>
-                    <source src="Trail.mp4" type="video/mp4">
+                    <source src="videos/sun.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="sea hide">
                 <video>
-                    <source src="Sea.mp4" type="video/mp4">
+                    <source src="videos/Sea.mp4" type="video/mp4">
                 </video>
             </div>
-            <div class="sea hide">
-                <video>
-                    <source src="Sea.mp4" type="video/mp4">
-                </video>
-            </div>
+                <div class="sun hide">
+                    <video>
+                        <source src="videos/sun.mp4" type="video/mp4">
+                    </video>
+                </div>
             <div class="forest hide">
                 <video>
-                    <source src="Forest.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="forest hide">
-                <video>
-                    <source src="Forest.mp4" type="video/mp4">
+                    <source src="videos/Forest.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="play">
@@ -121,16 +116,54 @@
                
 
             </div>
+
             <div class="menu hide">
                 <div class="menu-wrapper">
                     <div class="initial hide">
-                        <h3>Choisissez un endroit oú aller.</h1>
+                        <h3>Choisissez la meilleur réponse</h1>
                     </div>
                 
                     <div class="options hide">
                         <ul>
-                            <li><a id="sea-person">A la plage !</a></li>
-                            <li><a id="forest-person">Dans la forêt !</a></li>                        </ul>
+                            <li><a id="sea-person"> - La dernière fois que l’on sait vu, vous aviez décidé de
+                                reprendre une activité de loisirs comme la marche. C’est une
+                                bonne activité pour améliorer votre souffle. Est-ce que vous
+                                pratiquez régulièrement ?</a></li>
+                            <li><a id="forest-person">- Vous deviez arrêter totalement votre consommation de
+                                tabac et reprendre une bonne hygiène de vie, normalement, vous
+                                auriez dû vous sentir un peu mieux.</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="answer hide">
+                        <h3>Cette réponse permet d’évaluer les
+                            actions que le patient effectue pour le
+                            bien de sa santé. (Empowerment)
+                            capacité de prendre soin de soi.</h1>
+                            <div>
+                                <a id="continue-person">Continuer</a>
+                            </div>
+                    </div>
+
+
+                    <div class="options2 hide">
+                        <ul>
+                            <li><a id="rep11-person"> - D’accord, c’est une très bonne chose. Le fait de faire un
+                                peu de marche malgré la fatigue (dénutrition). Cela ne peut vous
+                                faire que du bien. (silence). Au niveau de votre consommation de
+                                tabac, la dernière fois, vous étiez à 52 cigarettes par jour et vous
+                                preniez un patch de 1425mg/16h avec des pastilles. Vous avez
+                                déjà grandement diminué votre consommation de tabac, on est
+                                sur la bonne voie pour arrêter complètement. Aujourd’hui, vous en êtes où dans votre consommation ?</a></li>
+                            <li><a id="rep12-person">- Ce serait mieux de pousser à deux fois par semaine. Il
+                                faut vous obliger à bouger, c’est la meilleure solution pour
+                                améliorer votre état de santé. Et vous en êtes où dans votre
+                                consommation de tabac ?</a></li>
+                                <li><a id="rep13-person">
+                                    La dernière fois, vous étiez à 52 cigarettes par jour et
+                                    vous preniez un patch de 1425mg/16h avec des pastilles. Vous en
+                                    êtes où aujourd’hui ?</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -140,8 +173,9 @@
         window.onload = function() {
             var videosContainer = document.getElementsByClassName("videos")[0];
             var menu = document.getElementsByClassName("menu")[0];
+            var answer = document.getElementsByClassName("answer")[0];
             var menuOptions = menu.getElementsByClassName("options")[0];
-
+            var menuOptions2 = menu.getElementsByClassName("options2")[0];
             var playButton = document.getElementsByClassName("play")[0];
             playButton.onclick = function() {
                 playButton.style.display = "none";
@@ -149,8 +183,21 @@
             }
 
             var seaPersonLink = document.getElementById("sea-person");
-            seaPersonLink.onclick = function() {
+            seaPersonLink.onclick = function() { 
+                playMenuSea();
+                
+            // showVideos(0, videosContainer.getElementsByClassName("sea"));
+            }
+
+            var continuePersonLink = document.getElementById("continue-person");
+            continuePersonLink.onclick = function() {
                 showVideos(0, videosContainer.getElementsByClassName("sea"));
+                setTimeout (function () {
+                    menu.style.display = "block";
+                    menu.getElementsByClassName("initial")[0].style.display = "block";
+                    menuOptions2.style.display = "block";
+                    menu.getElementsByClassName("answer")[0].style.display = "none";
+                }, 5000); // temps de du deuxieme dialoque
             }
 
             var forestPersonLink = document.getElementById("forest-person");
@@ -158,17 +205,29 @@
                 showVideos(0, videosContainer.getElementsByClassName("forest"));
             }
 
-            function playInitialMenu() {
-                playVideo(videosContainer.getElementsByClassName("initial")[0], loop=true);
+            function playMenuSea() {
+                setTimeout (function () {
+                    menu.style.display = "block";
+                    menu.getElementsByClassName("answer")[0].style.display = "block";
+                    menu.getElementsByClassName("initial")[0].style.display = "none";
+                    menuOptions.style.display = "none";
+                    answer.style.display = "block";
+                }, 10); // temps de du premier dialoque
+            };
 
+
+            function playInitialMenu() {
+             playVideo(videosContainer.getElementsByClassName("initial")[0], loop=true);
                 setTimeout (function () {
                     menu.style.display = "block";
                     menu.getElementsByClassName("initial")[0].style.display = "block";
                     menuOptions.style.display = "block";
-                }, 1000);
+                }, 1000); // temps de du premier dialoque
             };
 
             function playClosingMenu() {
+                console.log("playClosingMenu")
+
                 playVideo(videosContainer.getElementsByClassName("closing")[0], loop=true);
 
                 menu.getElementsByClassName("initial")[0].style.display = "none";
@@ -213,16 +272,16 @@
 
                     if (hasNextVideo && currentTime > 70) {
                         nextVideo = videos[index + 1];
-                        nextVideoTag = nextVideo.getElementsByTagName("video")[0];
+                        nextVideoTag = nextVideo. getElementsByTagName("video")[0];
                         nextVideoTag.preload = "auto";
                     }
                 })
 
                 video.onended = function() {
                     if (hasNextVideo) {
-                        showVideos(index+1, videos);
+                        showVideos(index + 1, videos);
                     } else {
-                        playClosingMenu();
+                        video.pause();
                     }
                 }
             }
